@@ -23,6 +23,7 @@ export default [
 And `prettier.config.js` like
 
 ```js
-// @ts-ignore
-module.exports = require('@blole/node-setup-lint/prettier.config.cjs');
+import { prettierConfig } from '@blole/node-setup-lint';
+
+export default prettierConfig;
 ```

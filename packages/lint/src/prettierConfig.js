@@ -1,4 +1,4 @@
-module.exports = {
+export const prettierConfig = {
   bracketSpacing: true,
   jsxSingleQuote: true,
   printWidth: 120,
