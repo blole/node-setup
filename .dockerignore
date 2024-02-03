@@ -1,0 +1,10 @@
+**/*Dockerfile
+**/.dockerignore
+**/README.md
+**/.gitignore
+
+**/.next/
+**/node_modules/
+
+node_modules/
+scripts/
