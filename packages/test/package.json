@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
+    "check": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx,json,md,html}\" --max-warnings=0",
     "test": "jest"
   },

@@ -19,7 +19,7 @@ COPY .nvmrc ./
 RUN nvm install && \
    corepack enable && \
    corepack prepare pnpm@8.15.1 --activate
-RUN mkdir /output && printf "\
+RUN mkdir /output/ && printf "\
 nvm  $(nvm -v)\n\
 node $(node -v)\n\
 npm  $(npm -v)\n\
@@ -32,45 +32,52 @@ FROM tools AS common-dependencies
 COPY pnpm-lock.yaml ./
 #ADD https://www.timeapi.io/api/Time/current/zone?timeZone=Europe/Stockholm /tmp/currenttime
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm fetch --color
+    pnpm fetch --color |& tee /output/pnpm-fetch.txt
 COPY \
-    tsconfig.json \
+    .editorconfig \
     package.json \
     pnpm-workspace.yaml \
+    tsconfig.json \
     ./
 COPY packages/lint/package.json packages/lint/package.json
 COPY packages/test/package.json packages/test/package.json
-RUN pnpm install --color --frozen-lockfile --offline
+RUN pnpm install --color --frozen-lockfile --offline |& tee /output/pnpm-install.txt
 
 
 
 FROM common-dependencies AS packages-lint
+RUN mkdir -p /output/packages/lint/
 COPY packages/lint/ packages/lint/
+WORKDIR /repo/packages/lint/
+
+FROM packages-lint AS packages-lint-check
+RUN pnpm check |& tee /output/packages/lint/check.txt
 
 FROM packages-lint AS packages-lint-lint
-RUN mkdir -p /output/packages/lint/ && \
-    cd packages/lint && \
-    pnpm lint --color |& tee /output/packages/lint/lint.txt
+RUN pnpm lint --color |& tee /output/packages/lint/lint.txt
 
 
 
 FROM common-dependencies AS packages-test
+RUN mkdir -p /output/packages/test/
 COPY packages/lint/ packages/lint/
 COPY packages/test/ packages/test/
+WORKDIR /repo/packages/test/
+
+FROM packages-test AS packages-test-check
+RUN pnpm check |& tee /output/packages/test/check.txt
 
 FROM packages-test AS packages-test-lint
-RUN mkdir -p /output/packages/test/ && \
-    cd packages/test && \
-    pnpm lint --color |& tee /output/packages/test/lint.txt
+RUN pnpm lint --color |& tee /output/packages/test/lint.txt
 
 FROM packages-test AS packages-test-test
-RUN mkdir -p /output/packages/test/ && \
-    cd packages/test && \
-    pnpm test --color |& tee /output/packages/test/test.txt
+RUN pnpm test --color |& tee /output/packages/test/test.txt
 
 
 
 FROM scratch AS ci
+COPY --from=packages-lint-check /output/ /
 COPY --from=packages-lint-lint /output/ /
+COPY --from=packages-test-check /output/ /
 COPY --from=packages-test-lint /output/ /
 COPY --from=packages-test-test /output/ /
