@@ -26,6 +26,8 @@
     "typescript": "^4.0.2"
   },
   "devDependencies": {
+    "@types/eslint-config-prettier": "6.11.3",
+    "@types/eslint-plugin-markdown": "2.0.2",
     "eslint": "8.42.0",
     "typescript": "4.9.5"
   }
