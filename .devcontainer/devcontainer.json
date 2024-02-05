@@ -1,43 +1,43 @@
 // For format details, see https://aka.ms/devcontainer.json
 {
-	"name": "node-setup",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "../"
-	},
-	
-	"mounts": [
-		{
-			"source": "node-setup-home",
-			"target": "/mnt/home/",
-			"type": "volume"
-		}
-	],
+  "name": "node-setup",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "../"
+  },
 
-	"postAttachCommand": "ln -sf /mnt/home/.zsh_history ~/",
+  "mounts": [
+    {
+      "source": "node-setup-home",
+      "target": "/mnt/home/",
+      "type": "volume"
+    }
+  ],
 
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"esbenp.prettier-vscode",
-				"github.vscode-github-actions",
-				"ms-azuretools.vscode-docker"
-			],
-			"settings": {
-				"terminal.integrated.defaultProfile.linux": "zsh"
-			}
-		}
-	},
+  "postAttachCommand": "ln -sf /mnt/home/.zsh_history ~/",
 
-	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {
-		  "version": "latest",
-		  "enableNonRootDocker": "true",
-		  "moby": "true"
-		}
-	},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
 
-	// Connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// blole: `touch x` doesn't work otherwise because the workspace is mounted as root
-	"remoteUser": "root"
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "true"
+    }
+  },
+
+  // Connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // blole: `touch x` doesn't work otherwise because the workspace is mounted as root
+  "remoteUser": "root"
 }
