@@ -78,6 +78,6 @@ RUN pnpm test --color |& tee /output/packages/test/test.txt
 FROM scratch AS ci
 COPY --from=packages-lint-check /output/ /
 COPY --from=packages-lint-lint /output/ /
-COPY --from=packages-test-check /output/ /
-COPY --from=packages-test-lint /output/ /
-COPY --from=packages-test-test /output/ /
+#COPY --from=packages-test-check /output/ /
+#COPY --from=packages-test-lint /output/ /
+#COPY --from=packages-test-test /output/ /

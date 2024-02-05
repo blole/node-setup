@@ -25,6 +25,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           target: ci
-          outputs: type=local,dest=/tmp/output
-      - name: print /output
-        run: scripts/cat-all.sh /tmp/output --github
+          outputs: type=local,dest=/tmp/output/
+      - name: print /output/
+        run: scripts/cat-all.sh /tmp/output/ --github
