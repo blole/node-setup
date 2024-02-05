@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: set up docker buildx
-        uses: docker/setup-buildx-action@v2
-      - name: docker ci-test
-        uses: docker/build-push-action@v3
+        uses: docker/setup-buildx-action@v3
+      - name: run dockerized test
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: node/apps/client-ui/Dockerfile
+          file: Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
           target: ci
           outputs: type=local,dest=/tmp/output/
-      - name: print /output/
+      - name: print dockerized test output
         run: scripts/cat-all.sh /tmp/output/ --github
