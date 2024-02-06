@@ -35,6 +35,8 @@ const jsFiles = [
   'src/**/*.mjsx',
 ] as const;
 
+const jsoncFiles = ['tsconfig.json'] as const;
+
 const languageOptions = {
   parser: parserTs,
   parserOptions: {
@@ -59,11 +61,42 @@ export const configMd = {
 
 export const configJson = {
   files: ['*.json', 'src/**/*.json'],
+  ignores: [...jsoncFiles],
   plugins: {
     json: pluginJson,
   },
   rules: {
     'json/*': ['error', { allowComments: true }],
+  },
+  processor: pluginJson.processors['.json'],
+} satisfies Linter.FlatConfig;
+
+export const configJsonc = {
+  files: [...jsoncFiles],
+  ignores: [],
+  plugins: {
+    json: pluginJson,
+  },
+  rules: {
+    'json/undefined': 'error',
+    'json/enum-value-mismatch': 'error',
+    'json/unexpected-end-of-comment': 'error',
+    'json/unexpected-end-of-string': 'error',
+    'json/unexpected-end-of-number': 'error',
+    'json/invalid-unicode': 'error',
+    'json/invalid-escape-character': 'error',
+    'json/invalid-character': 'error',
+    'json/property-expected': 'error',
+    'json/comma-expected': 'error',
+    'json/colon-expected': 'error',
+    'json/value-expected': 'error',
+    'json/comma-or-close-backet-expected': 'error',
+    'json/comma-or-close-brace-expected': 'error',
+    'json/trailing-comma': 'off',
+    'json/duplicate-key': 'error',
+    'json/comment-not-permitted': 'error',
+    'json/schema-resolve-error': 'error',
+    'json/unknown': 'off',
   },
   processor: pluginJson.processors['.json'],
 } satisfies Linter.FlatConfig;

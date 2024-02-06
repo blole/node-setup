@@ -6,7 +6,7 @@
     "outDir": "dist/",
     "paths": {},
     "rootDir": "src/",
-    "target": "ESNext"
+    "target": "ESNext",
   },
   "include": [
     "@typescript-eslint/*.d.ts",
@@ -20,6 +20,6 @@
     "src/**/*.tsx",
     "src/**/*.cts",
     "src/**/*.mts",
-    "src/**/*.mtsx"
-  ]
+    "src/**/*.mtsx",
+  ],
 }

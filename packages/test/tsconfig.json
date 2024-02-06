@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {}
+    "paths": {},
   },
   "include": [
     "*.js",
@@ -24,6 +24,6 @@
     "src/**/*.tsx",
     "src/**/*.cts",
     "src/**/*.mts",
-    "src/**/*.mtsx"
-  ]
+    "src/**/*.mtsx",
+  ],
 }
