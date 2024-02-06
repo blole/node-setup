@@ -1,13 +1,23 @@
-import type { Linter } from 'eslint';
+import type { ESLint, Linter } from 'eslint';
+/* eslint-disable import/default */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import pluginTs from '@typescript-eslint/eslint-plugin';
 import parserTs from '@typescript-eslint/parser';
-import pluginEditorconfig from 'eslint-plugin-editorconfig';
+// @ts-ignore
+import _pluginEditorconfig from 'eslint-plugin-editorconfig';
 import pluginImport from 'eslint-plugin-import';
 import pluginJson from 'eslint-plugin-json';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginMarkdown from 'eslint-plugin-markdown';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+/* eslint-enable */
+
+const pluginEditorconfig = _pluginEditorconfig as NarrowedPlugin<'all'>;
+
+type NarrowedPlugin<Configs extends string> = ESLint.Plugin & {
+  configs: Record<Configs, ESLint.ConfigData<Record<Configs, Linter.RuleEntry>>>;
+};
 
 const tsFiles = [
   '*.ts',
