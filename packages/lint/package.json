@@ -1,6 +1,6 @@
 {
   "name": "@blole/node-setup-lint",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
@@ -8,6 +8,9 @@
     "check": "tsc --noEmit",
     "lint": "eslint 'src/**' '**/*.{d.ts,json,md,html}' --max-warnings=0"
   },
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "5.59.11",
     "@typescript-eslint/parser": "5.59.11",
