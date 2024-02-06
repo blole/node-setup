@@ -4,8 +4,9 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
+    "build": "tsc --noEmit false",
     "check": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,jsx,ts,tsx,json,md,html}\" --max-warnings=0"
+    "lint": "eslint 'src/**' '**/*.{d.ts,json,md,html}' --max-warnings=0"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "5.59.11",

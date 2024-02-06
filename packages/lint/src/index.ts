@@ -11,4 +11,4 @@ export const eslintConfig = {
   tests: configTests,
   editorconfig: configEditorconfig,
   prettier,
-};
+} as const;

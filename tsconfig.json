@@ -7,7 +7,7 @@
     "baseUrl": ".",
     "checkJs": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
@@ -15,9 +15,9 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "noEmit": true,
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
@@ -29,15 +29,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {},
-    "plugins": [{ "name": "next" }],
+    "plugins": [{ "name": "Next" }],
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
     "strictNullChecks": true,
-    "target": "esnext",
-    "types": []
+    "target": "ESNext"
   },
   "include": [],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

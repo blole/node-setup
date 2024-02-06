@@ -1,3 +1,4 @@
+import type { Linter } from 'eslint';
 import pluginTs from '@typescript-eslint/eslint-plugin';
 import parserTs from '@typescript-eslint/parser';
 import pluginEditorconfig from 'eslint-plugin-editorconfig';
@@ -19,8 +20,20 @@ const tsFiles = [
   'src/**/*.cts',
   'src/**/*.mts',
   'src/**/*.mtsx',
-];
-const jsFiles = tsFiles.map((file) => file.replace('ts', 'js'));
+] as const;
+
+const jsFiles = [
+  '*.js',
+  '*.jsx',
+  '*.cjs',
+  '*.mjs',
+  '*.mjsx',
+  'src/**/*.js',
+  'src/**/*.jsx',
+  'src/**/*.cjs',
+  'src/**/*.mjs',
+  'src/**/*.mjsx',
+] as const;
 
 const languageOptions = {
   parser: parserTs,
@@ -34,7 +47,7 @@ const languageOptions = {
     ecmaVersion: 'latest',
     project: './tsconfig.json',
   },
-};
+} as const;
 
 export const configMd = {
   files: ['*.md', 'src/**/*.md'],
@@ -42,7 +55,7 @@ export const configMd = {
     markdown: pluginMarkdown,
   },
   processor: 'markdown/markdown',
-};
+} satisfies Linter.FlatConfig;
 
 export const configJson = {
   files: ['*.json', 'src/**/*.json'],
@@ -53,7 +66,7 @@ export const configJson = {
     'json/*': ['error', { allowComments: true }],
   },
   processor: pluginJson.processors['.json'],
-};
+} satisfies Linter.FlatConfig;
 
 export const configJs = {
   files: [...jsFiles],
@@ -93,7 +106,7 @@ export const configJs = {
       version: 'detect',
     },
   },
-};
+} as const; //satisfies Linter.FlatConfig;
 
 export const configTs = {
   files: [...tsFiles],
@@ -146,7 +159,7 @@ export const configTs = {
       },
     },
   },
-};
+} as const; // satisfies Linter.FlatConfig;
 
 export const configTests = {
   files: [
@@ -169,11 +182,11 @@ export const configTests = {
     'no-empty-function': 'off',
     'class-methods-use-this': 'off',
   },
-};
+} satisfies Linter.FlatConfig;
 
 export const configEditorconfig = [
   {
-    files: ['*', 'src/**/*'],
+    files: ['**'],
     ignores: [...tsFiles],
     plugins: {
       editorconfig: pluginEditorconfig,
@@ -192,4 +205,4 @@ export const configEditorconfig = [
       'editorconfig/indent': 'off', // broken for ts https://github.com/typescript-eslint/typescript-eslint/issues/1824
     },
   },
-];
+] satisfies Linter.FlatConfig[];
