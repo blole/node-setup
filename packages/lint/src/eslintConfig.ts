@@ -1,23 +1,45 @@
 import type { ESLint, Linter } from 'eslint';
+import parserTs from '@typescript-eslint/parser';
+import pluginTs from '@typescript-eslint/eslint-plugin';
+import pluginMarkdown from 'eslint-plugin-markdown';
 /* eslint-disable import/default */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import pluginTs from '@typescript-eslint/eslint-plugin';
-import parserTs from '@typescript-eslint/parser';
 // @ts-ignore
 import _pluginEditorconfig from 'eslint-plugin-editorconfig';
-import pluginImport from 'eslint-plugin-import';
-import pluginJson from 'eslint-plugin-json';
-import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import pluginMarkdown from 'eslint-plugin-markdown';
-import pluginReact from 'eslint-plugin-react';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
+// @ts-ignore
+import _pluginImport from 'eslint-plugin-import';
+// @ts-ignore
+import _pluginJson from 'eslint-plugin-json';
+// @ts-ignore
+import _pluginJsxA11y from 'eslint-plugin-jsx-a11y';
+// @ts-ignore
+import _pluginReact from 'eslint-plugin-react';
+// @ts-ignore
+import _pluginReactHooks from 'eslint-plugin-react-hooks';
 /* eslint-enable */
 
-const pluginEditorconfig = _pluginEditorconfig as NarrowedPlugin<'all'>;
-
-type NarrowedPlugin<Configs extends string> = ESLint.Plugin & {
+/**
+ * I didn't manage to get the proper `.d.ts`-files to work and be included in
+ * the build, so I just declared the types like did this instead.
+ * ```ts
+ * // eslint-plugin-import.d.ts
+ * declare module 'eslint-plugin-import' {
+ *   export const configs: {};
+ *   export const rules: {};
+ * }
+ * ```
+ */
+type NarrowedPlugin<Configs extends string | never, Processors extends string | never = never> = ESLint.Plugin & {
   configs: Record<Configs, ESLint.ConfigData<Record<Configs, Linter.RuleEntry>>>;
+  processors: Record<Processors, Linter.Processor<Linter.ProcessorFile>>;
 };
+
+const pluginEditorconfig = _pluginEditorconfig as NarrowedPlugin<'all'>;
+const pluginImport = _pluginImport as NarrowedPlugin<'react' | 'recommended' | 'typescript'>;
+const pluginJson = _pluginJson as NarrowedPlugin<never, '.json'>;
+const pluginJsxA11y = _pluginJsxA11y as NarrowedPlugin<'recommended'>;
+const pluginReact = _pluginReact as NarrowedPlugin<'recommended' | 'jsx-runtime'>;
+const pluginReactHooks = _pluginReactHooks as NarrowedPlugin<'recommended'>;
 
 const tsFiles = [
   '*.ts',
@@ -61,7 +83,7 @@ const languageOptions = {
   },
 } as const;
 
-export const configMd = {
+export const md = {
   files: ['*.md', 'src/**/*.md'],
   plugins: {
     markdown: pluginMarkdown,
@@ -69,7 +91,7 @@ export const configMd = {
   processor: 'markdown/markdown',
 } satisfies Linter.FlatConfig;
 
-export const configJson = {
+export const json = {
   files: ['*.json', 'src/**/*.json'],
   ignores: [...jsoncFiles],
   plugins: {
@@ -81,7 +103,7 @@ export const configJson = {
   processor: pluginJson.processors['.json'],
 } satisfies Linter.FlatConfig;
 
-export const configJsonc = {
+export const jsonc = {
   files: [...jsoncFiles],
   ignores: [],
   plugins: {
@@ -111,7 +133,7 @@ export const configJsonc = {
   processor: pluginJson.processors['.json'],
 } satisfies Linter.FlatConfig;
 
-export const configJs = {
+export const js = {
   files: [...jsFiles],
   languageOptions,
   plugins: {
@@ -122,7 +144,8 @@ export const configJs = {
     'react-hooks': pluginReactHooks,
   },
   rules: {
-    ...pluginTs.configs['recommended'].rules,
+    // eslint-disable-next-line import/no-named-as-default-member
+    ...pluginTs.configs['recommended']?.rules,
     ...pluginImport.configs['recommended'].rules,
     ...pluginJsxA11y.configs['recommended'].rules,
     ...pluginReact.configs['recommended'].rules,
@@ -151,7 +174,7 @@ export const configJs = {
   },
 } as const; //satisfies Linter.FlatConfig;
 
-export const configTs = {
+export const ts = {
   files: [...tsFiles],
   languageOptions,
   plugins: {
@@ -163,9 +186,12 @@ export const configTs = {
   },
   rules: {
     // ...(console.log(JSON.stringify(pluginTs.configs['recommended'].rules)) || {}), // useful for debugging
-    ...pluginTs.configs['eslint-recommended'].overrides[0].rules,
-    ...pluginTs.configs['recommended'].rules,
-    ...pluginTs.configs['recommended-requiring-type-checking'].rules,
+    // eslint-disable-next-line import/no-named-as-default-member
+    ...pluginTs.configs['eslint-recommended']?.overrides?.[0]?.rules,
+    // eslint-disable-next-line import/no-named-as-default-member
+    ...pluginTs.configs['recommended']?.rules,
+    // eslint-disable-next-line import/no-named-as-default-member
+    ...pluginTs.configs['recommended-requiring-type-checking']?.rules,
     ...pluginImport.configs['recommended'].rules,
     ...pluginImport.configs['typescript'].rules,
     ...pluginJsxA11y.configs['recommended'].rules,
@@ -204,7 +230,7 @@ export const configTs = {
   },
 } as const; // satisfies Linter.FlatConfig;
 
-export const configTests = {
+export const tests = {
   files: [
     'src/**/tests/**/*.ts',
     'src/**/tests/**/*.tsx',
@@ -227,7 +253,7 @@ export const configTests = {
   },
 } satisfies Linter.FlatConfig;
 
-export const configEditorconfig = [
+export const editorconfig = [
   {
     files: ['**'],
     ignores: [...tsFiles],
