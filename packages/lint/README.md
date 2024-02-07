@@ -1,5 +1,6 @@
 # @blole/node-setup-lint
 
+Some default configs for linting react, typescript, javascript, json, markdown, etc.
 Uses the [new eslint configuration file format](https://eslint.org/docs/latest/use/configure/configuration-files-new)
 
 ## Installation

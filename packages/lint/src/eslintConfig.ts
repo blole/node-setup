@@ -19,8 +19,8 @@ import _pluginReactHooks from 'eslint-plugin-react-hooks';
 /* eslint-enable */
 
 /**
- * I didn't manage to get the proper `.d.ts`-files to work and be included in
- * the build, so I just declared the types like did this instead.
+ * I didn't manage to get the `.d.ts`-files to work and be included in
+ *  the build, so I just declared the types like did this instead of e.g.
  * ```ts
  * // eslint-plugin-import.d.ts
  * declare module 'eslint-plugin-import' {

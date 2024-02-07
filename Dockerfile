@@ -4,7 +4,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
-    apt-get install --no-install-recommends --no-install-suggests -yqq curl ca-certificates
+    apt-get install --no-install-recommends --no-install-suggests -yqq \
+      ca-certificates curl jq
 
 ENV BASH_ENV /root/.env
 RUN touch "$BASH_ENV" && \
@@ -58,6 +59,12 @@ COPY --from=packages-lint-build /repo/packages/lint/dist/ /repo/packages/lint/di
 RUN pnpm lint --color |& tee /output/packages/lint/lint.txt
 
 FROM packages-lint-lint AS packages-lint-publish
+ARG TAG_VERSION
+RUN PACKAGE_VERSION="$(jq -r '.version' package.json)" && \
+    if [ "$PACKAGE_VERSION" != "${TAG_VERSION?}" ]; then \
+      echo "error: build arg TAG_VERSION=$TAG_VERSION does not match the package.json version: $PACKAGE_VERSION"; \
+      exit 1; \
+    fi
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN) && pnpm publish
 

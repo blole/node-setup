@@ -36,7 +36,10 @@ jobs:
     steps:
       - name: Extract version from tag
         id: extract_tag_version
-        run: echo "::set-output name=version::${GITHUB_REF#refs/tags/node-setup-lint-}"
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/node-setup-lint-}"
+          echo "extracted tag version $TAG_VERSION"
+          echo "{TAG_VERSION}={$TAG_VERSION}" >> "$GITHUB_OUTPUT"
       - name: checkout
         uses: actions/checkout@v4
       - name: set up docker buildx
@@ -49,6 +52,6 @@ jobs:
           cache-from: type=gha
           target: packages-lint-publish
           build-args: |
-            VERSION=${{ steps.extract_tag_version.outputs.version }}
+            TAG_VERSION=${{ steps.extract_tag_version.outputs.version }}
           secret-envs: |
             NODE_AUTH_TOKEN=${{ secrets.NPM_PUBLISH_TO_BLOLE }}
