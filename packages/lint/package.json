@@ -1,7 +1,7 @@
 {
   "name": "@blole/node-setup-lint",
-  "version": "0.0.7",
-  "main": "src/index.js",
+  "version": "0.0.8",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "build": "tsc --noEmit false",
