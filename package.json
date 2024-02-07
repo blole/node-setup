@@ -7,9 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "pnpm run -r clean",
     "build": "pnpm run -r build",
-    "test": "pnpm run -r test",
     "lint": "pnpm run -r lint"
   },
   "devDependencies": {

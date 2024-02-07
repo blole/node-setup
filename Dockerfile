@@ -41,7 +41,6 @@ COPY \
     tsconfig.json \
     ./
 COPY packages/lint/package.json packages/lint/package.json
-COPY packages/test/package.json packages/test/package.json
 RUN pnpm install --color --frozen-lockfile --offline |& tee /output/pnpm-install.txt
 
 
@@ -71,26 +70,6 @@ RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
 
 
 
-FROM common-dependencies AS packages-test
-RUN mkdir -p /output/packages/test/
-COPY packages/lint/ packages/lint/
-COPY packages/test/ packages/test/
-WORKDIR /repo/packages/test/
-
-FROM packages-test AS packages-test-check
-RUN pnpm check |& tee /output/packages/test/check.txt
-
-FROM packages-test AS packages-test-lint
-RUN pnpm lint --color |& tee /output/packages/test/lint.txt
-
-FROM packages-test AS packages-test-test
-RUN pnpm test --color |& tee /output/packages/test/test.txt
-
-
-
 FROM scratch AS ci
 COPY --from=packages-lint-build /output/ /
 COPY --from=packages-lint-lint /output/ /
-#COPY --from=packages-test-check /output/ /
-#COPY --from=packages-test-lint /output/ /
-#COPY --from=packages-test-test /output/ /
