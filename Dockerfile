@@ -50,11 +50,16 @@ RUN mkdir -p /output/packages/lint/
 COPY packages/lint/ packages/lint/
 WORKDIR /repo/packages/lint/
 
-FROM packages-lint AS packages-lint-check
-RUN pnpm check |& tee /output/packages/lint/check.txt
+FROM packages-lint AS packages-lint-build
+RUN pnpm build |& tee /output/packages/lint/build.txt
 
 FROM packages-lint AS packages-lint-lint
+COPY --from=packages-lint-build /repo/packages/lint/dist/ /repo/packages/lint/dist/
 RUN pnpm lint --color |& tee /output/packages/lint/lint.txt
+
+FROM packages-lint-lint AS packages-lint-publish
+RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
+    NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN) && pnpm publish
 
 
 
@@ -76,7 +81,7 @@ RUN pnpm test --color |& tee /output/packages/test/test.txt
 
 
 FROM scratch AS ci
-COPY --from=packages-lint-check /output/ /
+COPY --from=packages-lint-build /output/ /
 COPY --from=packages-lint-lint /output/ /
 #COPY --from=packages-test-check /output/ /
 #COPY --from=packages-test-lint /output/ /

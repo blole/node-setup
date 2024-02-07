@@ -2,7 +2,7 @@ import { eslintConfig } from './dist/index.js';
 
 export default [
   {
-    ignores: ['dist/', '@typescript-eslint/'],
+    ignores: ['dist/'],
   },
   eslintConfig.md,
   eslintConfig.json,

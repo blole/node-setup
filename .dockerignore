@@ -5,6 +5,10 @@
 
 **/.next/
 **/node_modules/
+**/tsconfig.tsbuildinfo
 
+packages/*/dist/
+
+.pnpm-store/
 node_modules/
 scripts/
