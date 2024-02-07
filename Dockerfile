@@ -66,7 +66,8 @@ RUN PACKAGE_VERSION="$(jq -r '.version' package.json)" && \
       exit 1; \
     fi
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN) && pnpm publish
+    echo "//registry.npmjs.org/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)" > .npmrc && \
+    pnpm publish
 
 
 

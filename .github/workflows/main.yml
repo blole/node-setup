@@ -53,5 +53,5 @@ jobs:
           target: packages-lint-publish
           build-args: |
             TAG_VERSION=${{ steps.extract_tag_version.outputs.TAG_VERSION }}
-          secret-envs: |
+          secrets: |
             NODE_AUTH_TOKEN=${{ secrets.NPM_PUBLISH_TO_BLOLE }}
