@@ -8,8 +8,7 @@
     "lint": "eslint 'src/**' '**/*.{d.ts,json,md,html}' --max-warnings=0"
   },
   "files": [
-    "dist/",
-    "README.md"
+    "dist/"
   ],
   "exports": {
     ".": "./dist/index.js"

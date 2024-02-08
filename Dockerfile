@@ -38,6 +38,7 @@ COPY \
     .editorconfig \
     package.json \
     pnpm-workspace.yaml \
+    README.md \
     tsconfig.json \
     ./
 COPY packages/lint/package.json packages/lint/package.json
