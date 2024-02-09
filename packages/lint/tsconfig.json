@@ -9,8 +9,6 @@
     "target": "ESNext",
   },
   "include": [
-    "@typescript-eslint/*.d.ts",
-    "*.d.ts",
     "src/**/*.js",
     "src/**/*.jsx",
     "src/**/*.cjs",

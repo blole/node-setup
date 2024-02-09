@@ -8,11 +8,19 @@
     "lint": "eslint 'src/**' '**/*.{d.ts,json,md,html}' --max-warnings=0"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "package.json",
+    "README.md"
   ],
   "exports": {
     ".": "./dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blole/node-setup.git",
+    "directory": "packages/lint"
+  },
+  "bugs": "https://github.com/blole/node-setup/issues",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "5.59.11",
     "@typescript-eslint/parser": "5.59.11",

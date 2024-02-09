@@ -5,27 +5,42 @@ Uses the [new eslint configuration file format](https://eslint.org/docs/latest/u
 
 ## Installation
 
-Can be installed into `eslint.config.js` like
+1. Add the `devDependency` and a script
 
-```js
-import { eslintConfig } from '@blole/node-setup-lint';
+   ```
+   {
+     "scripts": {
+       "lint": "eslint '**/*.{js,jsx,ts,tsx,json,md,html}' --max-warnings=0"
+     },
+     "devDependencies": {
+       "@blole/node-setup-lint": "x.x.x"
+     }
+   }
+   ```
 
-export default [
-  eslintConfig.md,
-  eslintConfig.json,
-  eslintConfig.jsonc,
-  eslintConfig.js,
-  eslintConfig.ts,
-  eslintConfig.tests,
-  ...eslintConfig.editorconfig,
-  eslintConfig.prettier,
-];
-```
+2. Create a `eslint.config.js` like
 
-And `prettier.config.js` like
+   ```js
+   import { eslintConfig } from '@blole/node-setup-lint';
 
-```js
-import { prettierConfig } from '@blole/node-setup-lint';
+   export default [
+     eslintConfig.md,
+     eslintConfig.json,
+     eslintConfig.jsonc,
+     eslintConfig.js,
+     eslintConfig.ts,
+     eslintConfig.tests,
+     ...eslintConfig.editorconfig,
+     eslintConfig.prettier,
+   ];
+   ```
 
-export default prettierConfig;
-```
+3. Create a `prettier.config.js` like
+
+   ```js
+   import { prettierConfig } from '@blole/node-setup-lint';
+
+   export default prettierConfig;
+   ```
+
+See [apps/linted-example/](../../apps/linted-example/) for an example.
