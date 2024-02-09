@@ -12,6 +12,15 @@ importers:
         specifier: 4.9.5
         version: 4.9.5
 
+  apps/linted-example:
+    devDependencies:
+      '@blole/node-setup-lint':
+        specifier: workspace:*
+        version: link:../../packages/lint
+      typescript:
+        specifier: 4.9.5
+        version: 4.9.5
+
   packages/lint:
     dependencies:
       '@typescript-eslint/eslint-plugin':

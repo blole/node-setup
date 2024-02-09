@@ -41,6 +41,7 @@ COPY \
     README.md \
     tsconfig.json \
     ./
+COPY apps/linted-example/package.json apps/linted-example/package.json
 COPY packages/lint/package.json packages/lint/package.json
 RUN pnpm install --color --frozen-lockfile --offline |& tee /output/pnpm-install.txt
 
@@ -67,10 +68,28 @@ RUN PACKAGE_VERSION="$(jq -r '.version' package.json)" && \
     fi
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     echo "//registry.npmjs.org/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)" > .npmrc && \
-    pnpm publish
+    pnpm publish && \
+    rm .npmrc
+
+
+
+FROM common-dependencies AS packages-linted-example
+RUN mkdir -p /output/apps/linted-example/
+COPY apps/linted-example/ apps/linted-example/
+WORKDIR /repo/apps/linted-example/
+
+FROM packages-linted-example AS packages-linted-example-check
+COPY --from=packages-lint-build /repo/packages/lint/dist/ /repo/packages/lint/dist/
+RUN pnpm check |& tee /output/apps/linted-example/build.txt
+
+FROM packages-linted-example AS packages-linted-example-lint
+COPY --from=packages-lint-build /repo/packages/lint/dist/ /repo/packages/lint/dist/
+RUN pnpm lint --color |& tee /output/apps/linted-example/lint.txt
 
 
 
 FROM scratch AS ci
 COPY --from=packages-lint-build /output/ /
 COPY --from=packages-lint-lint /output/ /
+COPY --from=packages-linted-example-check /output/ /
+COPY --from=packages-linted-example-lint /output/ /
