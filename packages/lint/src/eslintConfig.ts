@@ -1,9 +1,11 @@
 import type { ESLint, Linter } from 'eslint';
-import parserTs from '@typescript-eslint/parser';
-import pluginTs from '@typescript-eslint/eslint-plugin';
 import pluginMarkdown from 'eslint-plugin-markdown';
 /* eslint-disable import/default */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import _parserTs from '@typescript-eslint/parser';
+// @ts-ignore
+import _pluginTs from '@typescript-eslint/eslint-plugin';
 // @ts-ignore
 import _pluginEditorconfig from 'eslint-plugin-editorconfig';
 // @ts-ignore
@@ -29,11 +31,13 @@ import _pluginReactHooks from 'eslint-plugin-react-hooks';
  * }
  * ```
  */
-type NarrowedPlugin<Configs extends string | never, Processors extends string | never = never> = ESLint.Plugin & {
+type NarrowedPlugin<Configs extends string, Processors extends string = never> = ESLint.Plugin & {
   configs: Record<Configs, ESLint.ConfigData<Record<Configs, Linter.RuleEntry>>>;
   processors: Record<Processors, Linter.Processor<Linter.ProcessorFile>>;
 };
 
+const parserTs = _parserTs as Linter.ParserModule;
+const pluginTs = _pluginTs as NarrowedPlugin<'recommended' | 'eslint-recommended' | 'recommended-requiring-type-checking'>;
 const pluginEditorconfig = _pluginEditorconfig as NarrowedPlugin<'all'>;
 const pluginImport = _pluginImport as NarrowedPlugin<'react' | 'recommended' | 'typescript'>;
 const pluginJson = _pluginJson as NarrowedPlugin<never, '.json'>;

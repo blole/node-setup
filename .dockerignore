@@ -2,9 +2,9 @@
 **/.dockerignore
 **/.gitignore
 
+**/dist/
 **/node_modules/
 **/tsconfig.tsbuildinfo
-**/dist/
 
 .devcontainer/
 .github/
